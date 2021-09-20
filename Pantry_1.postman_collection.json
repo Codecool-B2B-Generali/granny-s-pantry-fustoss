@@ -1,0 +1,190 @@
+{
+	"info": {
+		"_postman_id": "f52cb526-86e5-47ef-a259-847f1d53be1f",
+		"name": "Pantry_1",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Restore basket",
+			"item": [
+				{
+					"name": "create_new_basket",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{pantry_api_path}}{{pantry_id}}/basket/{{basket_name}}",
+							"host": [
+								"{{pantry_api_path}}{{pantry_id}}"
+							],
+							"path": [
+								"basket",
+								"{{basket_name}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update_contents",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"fruits\": [\"apple\", \"banana\", \"peach\"]}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://getpantry.cloud/apiv1/pantry/38005d1e-b3c9-448d-80d9-957b7801e85c/basket/test1",
+							"protocol": "https",
+							"host": [
+								"getpantry",
+								"cloud"
+							],
+							"path": [
+								"apiv1",
+								"pantry",
+								"38005d1e-b3c9-448d-80d9-957b7801e85c",
+								"basket",
+								"test1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "check_basket",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://getpantry.cloud/apiv1/pantry/38005d1e-b3c9-448d-80d9-957b7801e85c/basket/test1",
+							"protocol": "https",
+							"host": [
+								"getpantry",
+								"cloud"
+							],
+							"path": [
+								"apiv1",
+								"pantry",
+								"38005d1e-b3c9-448d-80d9-957b7801e85c",
+								"basket",
+								"test1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "get_details",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://getpantry.cloud/apiv1/pantry/38005d1e-b3c9-448d-80d9-957b7801e85c",
+					"protocol": "https",
+					"host": [
+						"getpantry",
+						"cloud"
+					],
+					"path": [
+						"apiv1",
+						"pantry",
+						"38005d1e-b3c9-448d-80d9-957b7801e85c"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete_basket",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "https://getpantry.cloud/apiv1/pantry/38005d1e-b3c9-448d-80d9-957b7801e85c/basket/test1",
+					"protocol": "https",
+					"host": [
+						"getpantry",
+						"cloud"
+					],
+					"path": [
+						"apiv1",
+						"pantry",
+						"38005d1e-b3c9-448d-80d9-957b7801e85c",
+						"basket",
+						"test1"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"//Check if request status is OK",
+					"pm.test(\"Status code is 200\", function () {",
+					"    pm.response.to.have.status(200);",
+					"});",
+					"",
+					"//Check if Pantry API path variable is used in the URL",
+					"pm.test(\"Pantry API path variable used\", function () {",
+					"    pm.expect(String(pm.request.url)).to.include(pm.variables.get(\"pantry_api_path\"));",
+					"});",
+					"",
+					"//Check if Pantry ID variable is used in the URL",
+					"pm.test(\"Pantry id variable used\", function () {",
+					"    pm.expect(String(pm.request.url)).to.include(pm.variables.get(\"pantry_id\"));",
+					"});",
+					"",
+					"//Check if Basket name variable is used in the URL",
+					"//The .search() method returns -1 by default if no match found for \"basket\" in the URL (e.g. for getting account details)",
+					" if(String(pm.request.url).search(\"basket\") != -1){",
+					"pm.test(\"Basket name variable used when needed\", function () {",
+					"    pm.expect(String(pm.request.url)).to.include(pm.variables.get(\"basket_name\"));",
+					"    });",
+					"}"
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "pantry_api_path",
+			"value": "https://getpantry.cloud/apiv1/pantry/"
+		},
+		{
+			"key": "pantry_id",
+			"value": "38005d1e-b3c9-448d-80d9-957b7801e85c"
+		},
+		{
+			"key": "basket_name",
+			"value": "test1"
+		}
+	]
+}
